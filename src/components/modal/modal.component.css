@@ -1,0 +1,8 @@
+.pull-right{
+  float: right;
+  border : none;
+  background-color : transparent;
+}
+.space-xs{
+  margin-top: 20px;
+}
