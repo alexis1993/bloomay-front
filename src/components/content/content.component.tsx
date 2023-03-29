@@ -1,4 +1,4 @@
-import React,{ memo, useEffect, useMemo } from "react";
+import React,{ memo, useCallback, useEffect } from "react";
 import { getUsers } from "../../services/api.service";
 import { useQuery } from "react-query";
 import { BloomerEnum } from "../../interfaces/bloomerInterface";
@@ -6,6 +6,7 @@ import { formatUsers } from "../../helper/format";
 import { IFinalFormat } from "../../interfaces/finalFormatUserInterface";
 import { filterBloomer } from "../../helper/filterBloomer";
 import { IUserFilter } from "../../interfaces/userFilterInterface";
+import './content.component.css';
 
 const initialState : IUserFilter = {
     nbUser : 0 , 
@@ -13,49 +14,57 @@ const initialState : IUserFilter = {
 }
 
 const ContentComponent = () => {
-    const { data } = useQuery('users', getUsers)
+    const { data } = useQuery('users', getUsers, { staleTime: Infinity })
 
-    const finalDataUsersArrive = useMemo(()=>{
-       let userArriveFilter : IUserFilter = initialState
+    const finalDataUsers = useCallback((type : BloomerEnum)=>{
+       let userFilter : IUserFilter = initialState
        if(data){
-            const userArrive = formatUsers(data.users, BloomerEnum.ARRIVE)
-            userArriveFilter =  filterBloomer(userArrive)
+            const users = formatUsers(data, type)
+            userFilter = filterBloomer(users)
        }
-       return userArriveFilter
+       return userFilter
     }, [data])
 
-    const finalDataUsersLeave = useMemo(()=>{
-        let userLeaveFilter : IUserFilter = initialState
-        if(data){
-            const userLeave = formatUsers(data.users, BloomerEnum.LEAVE)
-            userLeaveFilter = filterBloomer(userLeave)
-        }
-        return userLeaveFilter
-    }, [data])
+    const isnotLastIndex = useCallback((i : number, type : BloomerEnum) => {
+        const finalDataUser = finalDataUsers(type)
+        const nbFinalDataUser = Object.keys(finalDataUser.userFiltered).length
+        return i < nbFinalDataUser - 1
+    },[finalDataUsers])
+
+    const isArrive = useCallback((type : BloomerEnum)=> type === BloomerEnum.ARRIVE , [])
+
+    const renderBloomer = (type: BloomerEnum) => {
+        const finalDataUser = finalDataUsers(type)
+        return(
+            <>
+                <div className="largeSize paddingLarge">
+                    <span className={`decoration padding-right ${isArrive(type) ? "arriveColor" : "leaveColor"}`}>
+                    {finalDataUser.nbUser}
+                    </span> 
+                    {isArrive(type) ? 'Bloomer entrants' : 'Bloomer sortants'}
+                </div>
+                {Object.entries(finalDataUser.userFiltered).map((k, i) =>
+                    <div key={k[0]}>
+                        <div className="center paddingSmall">
+                            <span className="dot margin-right greyColor"></span>
+                            <span className={`dateSize ${isArrive(type) ? "arriveColor" : "leaveColor"}`}>{k[0]}</span>
+                        </div>
+                        <div className={`center greyColor ${isnotLastIndex(i, type)? "line" : ""}`}>
+                            {k[1].map((user:IFinalFormat)=>
+                                <div key={user.id} className=" smallSize paddingSmall">{user.firstname} {user.lastname}</div>    
+                            )}
+                        </div>
+                    </div>
+                )}
+            </>
+        )
+    }
 
     return(
-        <>
-            <div>{finalDataUsersArrive.nbUser} Bloomer rentrant</div>
-            {Object.entries(finalDataUsersArrive.userFiltered).map((k, i) =>
-                <>
-                    <div key={k[0]}>{k[0]}</div>
-                    {k[1].map((user:IFinalFormat)=>
-                        <div key={user.id}>{user.firstname} {user.lastname}</div>    
-                    )}
-
-                </>
-            )}
-            <div>{finalDataUsersLeave.nbUser} Bloomer sortant</div>
-            {Object.entries(finalDataUsersLeave.userFiltered).map((k, i) =>
-                <>
-                    <div key={k[0]}>{k[0]}</div>
-                    {k[1].map((user: IFinalFormat)=>
-                        <div key={user.id}>{user.firstname} {user.lastname}</div>    
-                    )}
-
-                </>
-        )}
-        </>
+        <div className="center">
+            {renderBloomer(BloomerEnum.ARRIVE)}
+            {renderBloomer(BloomerEnum.LEAVE)}
+        </div>
     )
   }
   

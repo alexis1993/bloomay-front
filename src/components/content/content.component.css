@@ -1,0 +1,64 @@
+.arriveColor{
+    color : green;
+}
+
+.leaveColor{
+    color:red;
+}
+
+.paddingLarge{
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+.line{
+    border-left: 2px solid grey;
+    padding-left: 15px;
+}
+
+.paddingSmall{
+    padding-top: 5px;
+    padding-bottom: 5px;
+}
+
+.decoration{
+    text-decoration: underline;
+}
+.padding-right{
+    padding-right: 5px;
+}
+
+.center{
+    margin-left: 50%;
+    transform: translateX(-50%);
+    width: fit-content;
+    white-space: nowrap;
+}
+
+.dateSize{
+    font-size: medium
+}
+
+.largeSize{
+    font-size: large
+}
+
+.greyColor{
+    color: grey;
+}
+
+.smallSize{
+    font-size: small;
+}
+
+.dot {
+    height: 10px;
+    width: 10px;
+    background-color: grey;
+    border-radius: 50%;
+    display: inline-block;
+}
+
+.margin-right{
+    margin-right: 10px;
+}

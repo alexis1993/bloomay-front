@@ -1,7 +1,7 @@
 import { lastday } from "./lastDay";
 import { IFinalFormat } from "../interfaces/finalFormatUserInterface";
 
-export const filterBloomer = (user :  Record<string, Array<IFinalFormat>>) => {
+export const filterBloomer = (user : Record<string, Array<IFinalFormat>>) => {
     let userFiltered : Record<string, Array<IFinalFormat>> = {}
     let nbUser = 0
     const now = Date.now()

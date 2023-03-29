@@ -1,3 +1,1 @@
-export const lastday = (y: number, m : number) => {
-    return  new Date(y, m +1, 0).getTime();
-}
+export const lastday = (y: number, m : number) => new Date(y, m +1, 1).getTime();
