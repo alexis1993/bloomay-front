@@ -14,7 +14,7 @@ const initialState : IUserFilter = {
 }
 
 const ContentComponent = () => {
-    const { data } = useQuery('users', getUsers, { staleTime: Infinity })
+    const { data, isLoading } = useQuery('users', getUsers, { staleTime: Infinity })
 
     const finalDataUsers = useCallback((type : BloomerEnum)=>{
        let userFilter : IUserFilter = initialState
@@ -62,8 +62,14 @@ const ContentComponent = () => {
 
     return(
         <div className="center">
-            {renderBloomer(BloomerEnum.ARRIVE)}
-            {renderBloomer(BloomerEnum.LEAVE)}
+            {isLoading ?
+                <div>Loading...</div>
+            :
+                <>
+                    {renderBloomer(BloomerEnum.ARRIVE)}
+                    {renderBloomer(BloomerEnum.LEAVE)}
+                </>
+            }
         </div>
     )
   }
