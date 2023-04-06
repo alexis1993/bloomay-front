@@ -3,6 +3,10 @@ import './modal.component.css';
 import Modal from 'react-modal';
 import { MemoizedContentComponent } from "../content/content.component";
 
+type ModalProps = {
+  children : JSX.Element
+}
+
 const customStyles = {
     content: {
       top: '25%%',
@@ -14,7 +18,7 @@ const customStyles = {
     },
   };
 
-const ModalComponent = () => {
+const ModalComponent = ({children}: ModalProps) => {
     const [modalIsOpen, setIsOpen] = useState(false);
   
     const openModal = useCallback(()=>{
@@ -37,7 +41,7 @@ const ModalComponent = () => {
         >
           <button className="pull-right" onClick={closeModal}>X</button>
           <div className="space-xs"></div>
-          <MemoizedContentComponent/>
+          {children}
         </Modal>
       </div>
     );

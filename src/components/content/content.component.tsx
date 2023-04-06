@@ -49,9 +49,12 @@ const ContentComponent = () => {
                             <span className="dot margin-right greyColor"></span>
                             <span className={`dateSize ${isArrive(type) ? "arriveColor" : "leaveColor"}`}>{k[0]}</span>
                         </div>
-                        <div className={`center greyColor ${isnotLastIndex(i, type)? "line" : ""}`}>
+                        <div className="full-width greyColor">
                             {k[1].map((user:IFinalFormat)=>
-                                <div key={user.id} className=" smallSize paddingSmall">{user.firstname} {user.lastname}</div>    
+                            <div className="flex">
+                                <div className={`width-line ${isnotLastIndex(i,type) ? "line" : ""}`}></div>
+                                <div key={user.id} className=" smallSize paddingSmall">{user.firstname} {user.lastname}</div>  
+                            </div>  
                             )}
                         </div>
                     </div>

@@ -13,7 +13,19 @@
 
 .line{
     border-left: 2px solid grey;
-    padding-left: 15px;
+}
+
+.width-line{
+    width: 10px;
+}
+
+.full-width{
+    width: 100%;
+}
+
+.flex{
+    display: flex;
+    padding-left: 25px;
 }
 
 .paddingSmall{
